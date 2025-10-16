@@ -1,1 +1,23 @@
-theme: no-style-please
+remote_theme: riggraz/no-style-please
+author: Neek # name of site's author
+email: nikit-ka@inbox.ru # email of site's author
+url: https://neekup.github.io/pages/ # root address of the site
+description: > # description of the site (multiple lines allowed)
+  The internet's 14,792,065th most influential thought leadership blog.
+  
+permalink: /:slug.html
+
+theme_config:
+  appearance: "dark" # can be "light", "dark" or "auto"
+  back_home_text: ".." # customize text for homepage link in post layout
+  date_format: "%Y-%m-%d" # customize how date is formatted
+  show_description: false # show blog description in home page
+  lowercase_titles: false # show titles in lowercase in lists
+
+sass:
+  style: compressed
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jektex
