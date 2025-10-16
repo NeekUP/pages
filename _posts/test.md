@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Some title
+slug: test
 category: test
 ---
 # Some heading
