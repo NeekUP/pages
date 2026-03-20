@@ -2,6 +2,7 @@
 title: Boring social network
 layout: post
 slug: boring-social-network
+category: post
 ---
 I think the time has come for a new social network or content delivery methods. Something new should replace Facebook, X, and others, where people will have the ability to choose who can see their content and what content they will receive themselves. There will be a demand for confidence that, thanks to the transparency of algorithms and open-source software, they will receive information only from sources they consider trustworthy.
 

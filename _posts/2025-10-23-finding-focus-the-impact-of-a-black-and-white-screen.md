@@ -2,6 +2,7 @@
 title: "Finding Focus: The Impact of a Black-and-White Screen."
 layout: post
 slug: finding-focus-the-impact-of-a-black-and-white-screen
+category: post
 ---
 I once again decided that I was tired enough to take a break and watch whatever YouTube suggested to me. After some time, I was able to tear myself away, not feeling rested but rather the opposite, barely remembering what I had watched. This is a common story.
 
