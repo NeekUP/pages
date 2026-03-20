@@ -12,59 +12,12 @@ Abstractions themselves consist of abstractions, forming a hierarchical structur
 
 In the diagram below, all the rectangles are abstractions.
 
-```
-+------------+    +---------------------------+    +-------------+
-|            |    |                           |    |             |
-|    Сart    |    |            Car            |    |  Airplane   |
-|            |    |                           |    |             |
-+------------+    +---------------------------+    +-------------+
-           ^         ^                     ^         ^            
-           |         |                     |         |            
-           |         |                     |         |            
-        +----------------+           +-----------------+          
-        |                |           |                 |          
-        |      Wheel     |           |     Engine      |          
-        |                |           |                 |          
-        +----------------+           +-----------------+          
-```
+![Abstractions](/assets/layered-architecture/abstractions.png)
 
 A proper description of abstractions is a separate topic, but if an abstraction accurately describes an entity, it can be used anywhere it is needed; only the implementations differ. It is important to remember this and not to adjust the abstraction being created for the convenience of its implementation.
 
 Layered architecture is built upon abstractions. In this architecture, the application is divided into layers, and there can be any number of layers. *Each layer is not an abstraction in itself, but a level of abstractions.* Each layer can also be subdivided into sub-layers if necessary.
 
-```
-┌───────────────────────────────────────────────────────────────────────┐
-│                               Layer 1                                 │
-│                                                                       │
-│  ┌────────────┐    ┌───────────────────────────┐    ┌─────────────┐   │
-│  │            │    │                           │    │             │   │
-│  │    Сart    │    │            Car            │    │  Airplane   │   │
-│  │            │    │                           │    │             │   │
-│  └────────────┘    └───────────────────────────┘    └─────────────┘   │
-│             ▲         ▲                     ▲         ▲              │
-└───────────────────────────────────────────────────────────────────────┘
-              │         │                     │         │                
-┌───────────────────────────────────────────────────────────────────────┐
-│             │         │       Layer 2       │         │               │
-│             │         │                     │         │               │
-│          ┌────────────────┐           ┌─────────────────┐             │
-│          │                │           │                 │             │
-│          │      Wheel     │           │     Engine      │             │
-│          │                │           │                 │             │
-│          └────────────────┘           └─────────────────┘             │
-│           ▲             ▲               ▲              ▲             │
-└───────────│─────────────│───────────────│──────────────│──────────────┘
-            │             │               │              │               
-┌───────────│─────────────│───────────────│──────────────│──────────────┐
-│           │             │     Layer 3   │              │              │
-│           │             │               │              │              │
-│     ┌──────────┐ ┌────────────┐    ┌──────────┐  ┌───────────┐        │
-│     │          │ │            │    │          │  │           │        │
-│     │   ....   │ │    ....    │    │   ....   │  │   ....    │        │
-│     │          │ │            │    │          │  │           │        │
-│     └──────────┘ └────────────┘    └──────────┘  └───────────┘        │
-│                                                                       │
-└───────────────────────────────────────────────────────────────────────┘
-```
+![Layers](/assets/layered-architecture/layers.png)
 
 Layered architecture implies that the program's execution flow cannot skip layers. *All interactions happen from the upper layer to the lower ones. Each layer interacts only with the one directly below it.* Using programming language tools, you can separate the layers into different assemblies and control their connections with each other.
