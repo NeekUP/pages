@@ -4,6 +4,23 @@ layout: default
 
 {% include back_link.html %}
 
+<style>
+    article[data-scramble-pending="true"] {
+    color: transparent;
+    }
+
+    .scramble-char {
+    display: inline-block;
+    color: inherit;
+    vertical-align: baseline;
+    white-space: pre;
+    }
+
+    .scramble-char--hidden {
+    color: transparent;
+    }
+</style>
+
 <article>
   <p class="post-meta">
     <time datetime="{{ page.date }}">{{ page.date | date: "%Y-%m-%d" }}</time>
