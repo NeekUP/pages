@@ -74,23 +74,37 @@ layout: default
     var textNode = textNodes[nodeIndex];
     var original = textNode.nodeValue;
     var fragment = document.createDocumentFragment();
+    var parts = original.split(/(\s+)/);
 
-    for (var i = 0; i < original.length; i += 1) {
-      var char = original.charAt(i);
+    for (var partIndex = 0; partIndex < parts.length; partIndex += 1) {
+      var part = parts[partIndex];
 
-      if (/\s/.test(char)) {
-        fragment.appendChild(document.createTextNode(char));
+      if (!part) {
         continue;
       }
 
-      var span = document.createElement("span");
-      span.className = "scramble-char scramble-char--hidden";
-      span.textContent = char;
-      fragment.appendChild(span);
-      characters.push({
-        element: span,
-        finalChar: char
-      });
+      if (/^\s+$/.test(part)) {
+        fragment.appendChild(document.createTextNode(part));
+        continue;
+      }
+
+      var word = document.createElement("span");
+      word.className = "scramble-word";
+
+      for (var i = 0; i < part.length; i += 1) {
+        var char = part.charAt(i);
+        var span = document.createElement("span");
+
+        span.className = "scramble-char scramble-char--hidden";
+        span.textContent = char;
+        word.appendChild(span);
+        characters.push({
+          element: span,
+          finalChar: char
+        });
+      }
+
+      fragment.appendChild(word);
     }
 
     textNode.parentNode.replaceChild(fragment, textNode);
