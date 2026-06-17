@@ -8,7 +8,7 @@ layout: default
   <p class="post-meta">
     <time datetime="{{ page.date }}">{{ page.date | date: "%Y-%m-%d" }}</time>
   </p>
-  
+
   <h1>{{ page.title }}</h1>
 
   {{ content }}
@@ -17,3 +17,129 @@ layout: default
 <br />
 
 {% include back_link.html %}
+
+<script>
+  (function () {
+    var article = document.querySelector("article");
+    if (!article) {
+      return;
+    }
+
+    var ACTIVE_WINDOW_SIZE = 100;
+    var ASCII_START = 33;
+    var ASCII_END = 126;
+    var MIN_DURATION = 120;
+    var DURATION_SPREAD = 120;
+    var randomPool = [];
+
+    for (var code = ASCII_START; code <= ASCII_END; code += 1) {
+      randomPool.push(String.fromCharCode(code));
+    }
+
+    var walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT, null);
+    var textNodes = [];
+    var node;
+
+    while ((node = walker.nextNode())) {
+      if (node.nodeValue && node.nodeValue.length) {
+        textNodes.push(node);
+      }
+    }
+
+    var characters = [];
+
+    for (var nodeIndex = 0; nodeIndex < textNodes.length; nodeIndex += 1) {
+      var textNode = textNodes[nodeIndex];
+      var original = textNode.nodeValue;
+      var fragment = document.createDocumentFragment();
+
+      for (var i = 0; i < original.length; i += 1) {
+        var char = original.charAt(i);
+
+        if (/\s/.test(char)) {
+          fragment.appendChild(document.createTextNode(char));
+          continue;
+        }
+
+        var span = document.createElement("span");
+        span.className = "scramble-char scramble-char--hidden";
+        span.textContent = char;
+        fragment.appendChild(span);
+        characters.push({
+          element: span,
+          finalChar: char
+        });
+      }
+
+      textNode.parentNode.replaceChild(fragment, textNode);
+    }
+
+    for (var charIndex = 0; charIndex < characters.length; charIndex += 1) {
+      var character = characters[charIndex];
+      var width = character.element.getBoundingClientRect().width;
+      character.element.style.width = width + "px";
+    }
+
+    article.removeAttribute("data-scramble-pending");
+
+    if (!characters.length) {
+      return;
+    }
+
+    function randomAscii() {
+      return randomPool[(Math.random() * randomPool.length) | 0];
+    }
+
+    function activateCharacter(now, index, activeCharacters) {
+      var character = characters[index];
+      activeCharacters.push({
+        source: character,
+        startedAt: now,
+        duration: MIN_DURATION + Math.random() * DURATION_SPREAD
+      });
+    }
+
+    window.addEventListener("load", function () {
+      var nextIndex = 0;
+      var activeCharacters = [];
+
+      article.removeAttribute("data-scramble-pending");
+
+      function fillWindow(now) {
+        while (
+          activeCharacters.length < ACTIVE_WINDOW_SIZE &&
+          nextIndex < characters.length
+        ) {
+          activateCharacter(now, nextIndex, activeCharacters);
+          nextIndex += 1;
+        }
+      }
+
+      function updateFrame(now) {
+        fillWindow(now);
+
+        if (!activeCharacters.length) {
+          return;
+        }
+
+        for (var i = activeCharacters.length - 1; i >= 0; i -= 1) {
+          var active = activeCharacters[i];
+          var source = active.source;
+          var elapsed = now - active.startedAt;
+          var done = elapsed >= active.duration;
+
+          source.element.textContent = done ? source.finalChar : randomAscii();
+          source.element.classList.remove("scramble-char--hidden");
+
+          if (done) {
+            activeCharacters.splice(i, 1);
+          }
+        }
+
+        requestAnimationFrame(updateFrame);
+      }
+
+      requestAnimationFrame(updateFrame);
+    }, { once: true });
+  }());
+</script>
